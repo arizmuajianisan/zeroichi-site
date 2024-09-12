@@ -1,11 +1,12 @@
 services:
-  wordpress:
+  zi-wordpress:
     image: wordpress:latest
+    container_name: zi-wordpress
     ports:
       - 8090:80
     restart: always
     environment:
-      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_HOST: zi-db
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_DB_NAME: ${MYSQL_DB_NAME}
@@ -20,8 +21,9 @@ services:
     volumes:
       - ./wordpress:/var/www/html
 
-  db:
+  zi-db:
     image: mysql:8.0
+    container_name: zi-db
     restart: always
     environment:
       MYSQL_DATABASE: ${MYSQL_DB_NAME}
@@ -33,13 +35,14 @@ services:
     volumes:
       - ./db:/var/lib/mysql
 
-  phpmyadmin:
+  zi-phpmyadmin:
     image: phpmyadmin:latest
+    container_name: zi-phpmyadmin
     restart: always
     ports:
       - 8081:80
     environment:
-      PMA_HOST: db
+      PMA_HOST: zi-db
       PMA_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     env_file:
       - .secret.env
